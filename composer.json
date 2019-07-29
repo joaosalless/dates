@@ -1,0 +1,56 @@
+{
+  "name": "joaosalless/dates",
+  "type": "library",
+  "description": "Collaborative dates library for offline identification of holidays or commemorative dates (national, state, municipal) and automatic calculation of working days.",
+  "keywords": [
+    "joaosalless",
+    "dates",
+    "holidays",
+    "work-days"
+  ],
+  "homepage": "https://github.com/joaosalless/dates",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "João Sales",
+      "email": "joaosalless@gmail.com",
+      "homepage": "https://github.com/joaosalless",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "ext-calendar": "*",
+    "symfony/console": "^4.3",
+    "illuminate/support": "5.5.*",
+    "symfony/var-dumper": ">=3.4 <5",
+    "league/csv": "^7.0",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Joaosalless\\Dates\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Joaosalless\\Dates\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "check-style": "phpcs src tests",
+    "fix-style": "phpcbf src tests"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
+}
