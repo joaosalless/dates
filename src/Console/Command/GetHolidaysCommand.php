@@ -45,18 +45,18 @@ class GetHolidaysCommand extends Command
     {
         $date = $input->getOption('date') ?? 'All year';
 
-        $output->writeln("Holidays in:\n");
-        $output->writeln("Date: {$date}");
-        $output->writeln("Country {$input->getArgument('country')}");
-        $output->writeln("State {$input->getOption('state')}");
-        $output->writeln("City {$input->getOption('city')}\n");
-
         $payload = [
             'country' => $input->getArgument('country'),
             'date' => $input->getOption('date') ?? 'now',
             'state' => $input->getOption('state') ?? null,
             'city' => $input->getOption('city') ?? null,
         ];
+
+        $output->writeln("Holidays:\n");
+        $output->writeln("Date: {$date}");
+        $output->writeln("Country {$payload['country']}");
+        $output->writeln("State {$payload['state']}");
+        $output->writeln("City {$payload['city']}\n");
 
         $dates = new Dates('BR');
 

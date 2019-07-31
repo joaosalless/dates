@@ -13,16 +13,16 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class GetWorkDateCommand
+ * Class CalculateBusinessDaysCommand
  *
  * @package Joaosalless\Dates\Console\Command
  */
-class GetWorkDateCommand extends Command
+class CalculateBusinessDaysCommand extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('events:get-work-date')
+            ->setName('events:calculate-business-days')
             ->setDescription('Return a work date.')
             ->setDefinition(
                 new InputDefinition([
@@ -43,15 +43,6 @@ class GetWorkDateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $date = $input->getOption('date') ?? 'All year';
-
-        $output->writeln("Work date in:\n");
-        $output->writeln("Date: {$date}");
-        $output->writeln("Work days: {$input->getArgument('work-days')}");
-        $output->writeln("Country {$input->getArgument('country')}");
-        $output->writeln("State {$input->getOption('state')}");
-        $output->writeln("City {$input->getOption('city')}\n");
-
         $payload = [
             'country' => $input->getArgument('country'),
             'date' => $input->getOption('date') ?? 'now',
@@ -60,9 +51,16 @@ class GetWorkDateCommand extends Command
             'city' => $input->getOption('city') ?? null,
         ];
 
+        $output->writeln("Calculate Business Days:\n");
+        $output->writeln("Date: {$payload['date']}");
+        $output->writeln("Work days: {$payload['work-days']}");
+        $output->writeln("Country {$payload['country']}");
+        $output->writeln("State {$payload['state']}");
+        $output->writeln("City {$payload['city']}\n");
+
         $dates = new Dates('BR');
 
-        $workDate = $dates->getWorkDate(
+        $workDate = $dates->calculateBusinessDays(
             $payload['work-days'],
             $payload['date'],
             $payload['state'],

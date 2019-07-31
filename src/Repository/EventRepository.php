@@ -120,7 +120,7 @@ class EventRepository extends CsvRepository
     {
         return $this
             ->getEventsByCountry()
-            ->where('region', '=', Event::region_STATE)
+            ->where('region', '=', Event::REGION_STATE)
             ->where('state', '=', $this->getBuilder()->getState()->getCode())
             ->where('city', '=', null)
             ->values();
@@ -135,7 +135,7 @@ class EventRepository extends CsvRepository
     {
         return $this
             ->getEventsByCountry()
-            ->where('region', '=', Event::region_CITY)
+            ->where('region', '=', Event::REGION_CITY)
             ->where('city', '=', $this->getBuilder()->getCity()->getCode())
             ->values();
     }

@@ -127,7 +127,9 @@ class Dates
     }
 
     /**
-     * @param int $workDays
+     * Calculates business days from a start date and a specified number of days
+     *
+     * @param int $days
      * @param string|null $date
      * @param string|null $state
      * @param string|null $city
@@ -135,13 +137,37 @@ class Dates
      * @return DateTime
      * @throws Exception
      */
-    public function getWorkDate(
-        int $workDays,
+    public function calculateBusinessDays(
+        int $days,
         ?string $date = 'now',
         ?string $state = null,
         ?string $city = null
     ): DateTime {
-        return $this->dataService->getWorkDate($workDays, $date, $state, $city);
+        return $this->dataService->calculateBusinessDays($days, $date, $state, $city);
+    }
+
+    /**
+     * Check if day is a business day
+     *
+     * @param DateTime|string $dateTime
+     * @return bool
+     * @throws Exception
+     */
+    public function isBusinessDay($dateTime): bool
+    {
+        return $this->dataService->isBusinessDay($dateTime);
+    }
+
+    /**
+     * Verify if given time is office hour
+     *
+     * @param DateTime|string $dateTime
+     * @return bool
+     * @throws Exception
+     */
+    public function isOfficeHour($dateTime): bool
+    {
+        return $this->dataService->isOfficeHour($dateTime);
     }
 
 }

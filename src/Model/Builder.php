@@ -19,9 +19,9 @@ class Builder extends Model
     private $iso;
 
     /**
-     * @var WorkDays
+     * @var Week
      */
-    private $workDays;
+    private $week;
 
     /**
      * @var string
@@ -67,7 +67,7 @@ class Builder extends Model
      * Builder constructor.
      *
      * @param Iso $iso
-     * @param WorkDays $workDays
+     * @param Week $week
      * @param string $dataType
      * @param DateTime|null $date
      * @param State|null $state
@@ -78,7 +78,7 @@ class Builder extends Model
      */
     public function __construct(
         Iso $iso,
-        WorkDays $workDays,
+        Week $week,
         string $dataType,
         ?DateTime $date = null,
         ?State $state = null,
@@ -95,7 +95,7 @@ class Builder extends Model
         $this->filter_date = $filter_date;
         $this->filter_state = $filter_state;
         $this->filter_city = $filter_city;
-        $this->workDays = $workDays;
+        $this->week = $week;
     }
 
     /**
@@ -290,20 +290,20 @@ class Builder extends Model
     }
 
     /**
-     * @return WorkDays
+     * @return Week
      */
-    public function getWorkDays(): WorkDays
+    public function getWeek(): Week
     {
-        return $this->workDays;
+        return $this->week;
     }
 
     /**
-     * @param WorkDays $workDays
+     * @param Week $week
      * @return Builder
      */
-    public function setWorkDays(WorkDays $workDays): self
+    public function setWeek(Week $week): self
     {
-        $this->workDays = $workDays;
+        $this->week = $week;
 
         return $this;
     }

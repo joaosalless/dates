@@ -8,8 +8,7 @@ use DateTime;
 use Exception;
 use Illuminate\Support\Collection;
 use Joaosalless\Dates\Model\Builder;
-use Joaosalless\Dates\Model\WorkDate;
-use Joaosalless\Dates\Model\WorkDays;
+use Joaosalless\Dates\Model\Week;
 use Joaosalless\Dates\Repository\CityRepository;
 use Joaosalless\Dates\Repository\EventRepository;
 use Joaosalless\Dates\Repository\IsoRepository;
@@ -59,28 +58,20 @@ class DataService
      * DataService constructor.
      *
      * @param string $iso
-     *
-     * @throws Exception
+     * @param array|null $config
      */
-    public function __construct(string $iso)
+    public function __construct(string $iso, ?array $config = [])
     {
         // Start ISO repository
         $this->isoRepository = new IsoRepository();
 
-        $workDays = new WorkDays([
-            0 => false,
-            1 => true,
-            2 => true,
-            3 => true,
-            4 => true,
-            5 => true,
-            6 => false,
-        ]);
+        // Config week days
+        $week = new Week($config['week'] ?? []);
 
         // Start Builder
         $this->builder = new Builder(
             $this->isoRepository->getIsoByCode($this->formatIsoCode($iso)),
-            $workDays,
+            $week,
             $this->dataType,
             null,
             null,
@@ -95,14 +86,27 @@ class DataService
     }
 
     /**
-     * Defines the work days to be used in the query
+     * Defines the week days to be used in the query
      *
-     * @param array $workDays
+     * @param Week $week
      * @return DataService
      */
-    public function setWorkDays(array $workDays): self
+    public function setWeek(Week $week): self
     {
-        $this->builder->setWorkDays(new WorkDays($workDays));
+        $this->builder->setWeek($week);
+
+        return $this;
+    }
+
+    /**
+     * Defines the week days from config
+     *
+     * @param array $config
+     * @return DataService
+     */
+    public function setWeekFromConfig(array $config): self
+    {
+        $this->builder->setWeek(new Week($config));
 
         return $this;
     }
@@ -352,7 +356,9 @@ class DataService
     }
 
     /**
-     * @param int $workDays
+     * Calculates business days from a start date and a specified number of days
+     *
+     * @param int $days
      * @param $date
      * @param string|null $state
      * @param string|null $city
@@ -360,41 +366,73 @@ class DataService
      * @return DateTime
      * @throws Exception
      */
-    public function getWorkDate(int $workDays, $date, ?string $state, ?string $city): DateTime
+    public function calculateBusinessDays(int $days, $date, ?string $state, ?string $city): DateTime
     {
-        $workDaysCount = 0;
+        $daysCount = 1;
         $date = $this->formatDate($date);
 
-        while ($workDaysCount < $workDays) {
-
-            if ($this->isHoliday($date, $state, $city, false)) {
-                $date->modify('+1 days');
-            }
-
-            if (!$this->isWorkDay($date)) {
-                $date->modify('+1 days');
-            }
+        while ($daysCount < $days) {
 
             $date->modify('+1 days');
 
-            $workDaysCount++;
+            $weekDay = $this
+                ->getBuilder()
+                ->getWeek()
+                ->getWeekDayByDateTime($date);
+
+            if ($this->isHoliday($date, $state, $city) || !$weekDay->isBusinessDay()) {
+                $date->modify('+1 days');
+            }
+
+            if ((
+                $weekDay->isBusinessDay() &&
+                $weekDay->getCheckOfficeHours() &&
+                !$weekDay->isOfficeHour($date) &&
+                ($daysCount === $days || $daysCount === 1)
+            )) {
+                $date->modify('+1 days');
+            }
+
+            $daysCount++;
         }
 
         return $date;
     }
 
     /**
-     * Check if day is saturday or sunday
+     * Check if day is a business day
      *
-     * @param DateTime $date
+     * @param DateTime|string $dateTime
      * @return bool
+     * @throws Exception
      */
-    private function isWorkDay(DateTime $date): bool
+    public function isBusinessDay($dateTime): bool
     {
+        $dateTime = $this->formatDate($dateTime);
+
         return $this
             ->getBuilder()
-            ->getWorkDays()
-            ->isWorkDay($date);
+            ->getWeek()
+            ->getWeekDayByDateTime($dateTime)
+            ->isBusinessDay();
+    }
+
+    /**
+     * Verify if given time is office hour
+     *
+     * @param DateTime|string $dateTime
+     * @return bool
+     * @throws Exception
+     */
+    public function isOfficeHour($dateTime): bool
+    {
+        $dateTime = $this->formatDate($dateTime);
+
+        return $this
+            ->getBuilder()
+            ->getWeek()
+            ->getWeekDayByDateTime($dateTime)
+            ->isOfficeHour($dateTime);
     }
 
 }

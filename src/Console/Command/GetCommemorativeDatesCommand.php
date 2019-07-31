@@ -45,12 +45,6 @@ class GetCommemorativeDatesCommand extends Command
     {
         $date = $input->getOption('date') ?? 'All year';
 
-        $output->writeln("Commemorative dates in:\n");
-        $output->writeln("Date: {$date}");
-        $output->writeln("Country {$input->getArgument('country')}");
-        $output->writeln("State {$input->getOption('state')}");
-        $output->writeln("City {$input->getOption('city')}\n");
-
         $payload = [
             'country' => $input->getArgument('country'),
             'date' => $input->getOption('date') ?? 'now',
@@ -58,6 +52,12 @@ class GetCommemorativeDatesCommand extends Command
             'city' => $input->getOption('city') ?? null,
             'grouped' => (bool) $input->getOption('grouped') ?? false,
         ];
+
+        $output->writeln("Commemorative dates:\n");
+        $output->writeln("Date: {$date}");
+        $output->writeln("Country {$payload['country']}");
+        $output->writeln("State {$payload['state']}");
+        $output->writeln("City {$payload['city']}\n");
 
         $dates = new Dates('BR');
 

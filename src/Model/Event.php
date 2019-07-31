@@ -20,8 +20,8 @@ class Event extends Model
     const DATE_TYPE_EASTER_SUNDAY = 'easter_sunday';
     const DATE_TYPE_VARIABLE_YEAR_STRING = 'variable_year_string';
     const region_NATIONAL = 'national';
-    const region_STATE = 'state';
-    const region_CITY = 'city';
+    const REGION_STATE = 'state';
+    const REGION_CITY = 'city';
     const EVENT_TYPE_HOLIDAY = 'holiday';
     const EVENT_TYPE_COMMEMORATIVE_DATE = 'commemorative_date';
 
@@ -265,11 +265,11 @@ class Event extends Model
      */
     private function getSortValue(): int
     {
-        if ($this->region === Event::region_STATE) {
+        if ($this->region === Event::REGION_STATE) {
             return 1;
         }
 
-        if ($this->region === Event::region_CITY) {
+        if ($this->region === Event::REGION_CITY) {
             return 2;
         }
 

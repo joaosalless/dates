@@ -118,11 +118,11 @@ class Holiday extends Model
      */
     private function getSortValue(): int
     {
-        if ($this->region === Event::region_STATE) {
+        if ($this->region === Event::REGION_STATE) {
             return 1;
         }
 
-        if ($this->region === Event::region_CITY) {
+        if ($this->region === Event::REGION_CITY) {
             return 2;
         }
 
