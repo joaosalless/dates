@@ -103,42 +103,41 @@ $dates->getCommemorativeDates(
 Calculates business days from a start date and a specified number of days
 
 ``` php
-$dates = new Joaosalless\Dates\Dates('BR');
-
 // Configure business days and office hours
-
-$weekConfig = [
-    'office_hours_start' => '09:00',
-    'office_hours_end' => '18:00',
-    'check_office_hours' => true,
-    'days' => [
-        'sun' => [
-            'business_day' => false,
-        ],
-        'mon' => [
-            'business_day' => true,
-        ],
-        'tue' => [
-            'business_day' => true,
-        ],
-        'wed' => [
-            'business_day' => true,
-        ],
-        'thu' => [
-            'business_day' => true,
-        ],
-        'fri' => [
-            'business_day' => true,
-        ],
-        'sat' => [
-            'business_day' => false,
-            'office_hours_start' => '09:00',
-            'office_hours_end' => '14:00',
-        ],
+$config = [
+    'week' => [
+        'office_hours_start' => '09:00',
+        'office_hours_end' => '18:00',
+        'check_office_hours' => false,
+        'days' => [
+            'sun' => [
+                'business_day' => false,
+            ],
+            'mon' => [
+                'business_day' => true,
+            ],
+            'tue' => [
+                'business_day' => true,
+            ],
+            'wed' => [
+                'business_day' => false,
+            ],
+            'thu' => [
+                'business_day' => true,
+            ],
+            'fri' => [
+                'business_day' => true,
+            ],
+            'sat' => [
+                'business_day' => true,
+                'office_hours_start' => '09:00',
+                'office_hours_end' => '14:00',
+            ],
+        ]
     ]
 ];
 
-$dates->setWeekFromConfig($weekConfig);
+$dates = new Dates('BR', $config);
 
 $dates->calculateBusinessDays(
     10,           // Number of days
