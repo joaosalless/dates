@@ -30,7 +30,7 @@ class GetCommemorativeDatesCommand extends Command
                     new InputOption('date', 'd', InputOption::VALUE_OPTIONAL),
                     new InputOption('state', 's', InputOption::VALUE_OPTIONAL),
                     new InputOption('city', 'c', InputOption::VALUE_OPTIONAL),
-                    new InputOption('grouped', 'g', InputOption::VALUE_OPTIONAL),
+                    new InputOption('not-grouped', null, InputOption::VALUE_NONE),
                 ])
             );
     }
@@ -50,7 +50,7 @@ class GetCommemorativeDatesCommand extends Command
             'date' => $input->getOption('date') ?? 'now',
             'state' => $input->getOption('state') ?? null,
             'city' => $input->getOption('city') ?? null,
-            'grouped' => (bool) $input->getOption('grouped') ?? false,
+            'not-grouped' => $input->getOption('not-grouped'),
         ];
 
         $output->writeln("Commemorative dates:\n");
@@ -65,7 +65,7 @@ class GetCommemorativeDatesCommand extends Command
             $payload['date'],
             $payload['state'],
             $payload['city'],
-            $payload['grouped']
+            !$payload['not-grouped']
         );
 
         $output->writeln(json_encode($holidays, JSON_PRETTY_PRINT));

@@ -30,7 +30,7 @@ class GetHolidaysCommand extends Command
                     new InputOption('date', 'd', InputOption::VALUE_OPTIONAL),
                     new InputOption('state', 's', InputOption::VALUE_OPTIONAL),
                     new InputOption('city', 'c', InputOption::VALUE_OPTIONAL),
-                    new InputOption('grouped', 'g', InputOption::VALUE_OPTIONAL),
+                    new InputOption('not-grouped', null, InputOption::VALUE_NONE),
                 ])
             );
     }
@@ -50,6 +50,7 @@ class GetHolidaysCommand extends Command
             'date' => $input->getOption('date') ?? 'now',
             'state' => $input->getOption('state') ?? null,
             'city' => $input->getOption('city') ?? null,
+            'not-grouped' => $input->getOption('not-grouped'),
         ];
 
         $output->writeln("Holidays:\n");
@@ -63,7 +64,8 @@ class GetHolidaysCommand extends Command
         $holidays = $dates->getHolidays(
             $payload['date'],
             $payload['state'],
-            $payload['city']
+            $payload['city'],
+            !$payload['not-grouped']
         );
 
         $output->writeln(json_encode($holidays, JSON_PRETTY_PRINT));

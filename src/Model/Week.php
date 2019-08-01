@@ -48,7 +48,7 @@ class Week
                 'business_day' => true,
             ],
             'sat' => [
-                'business_day' => true,
+                'business_day' => false,
             ],
         ]
     ];
