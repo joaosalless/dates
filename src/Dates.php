@@ -25,20 +25,30 @@ class Dates
      * Dates constructor.
      *
      * @param string $country
-     * @throws Exception
+     * @param array|null $config
      */
-    public function __construct(string $country)
+    public function __construct(string $country, ?array $config = [])
     {
-        $this->dataService = new DataService($country);
+        $this->dataService = new DataService($country, $config);
     }
 
     /**
      * @param string $iso
      * @throws Exception
      */
-    public function setCountry(string $iso)
+    public function setCountry(string $iso): void
     {
         $this->dataService->setIso($iso);
+    }
+
+    /**
+     * Defines the week days from config
+     *
+     * @param array $config
+     */
+    public function setWeekFromConfig(array $config): void
+    {
+        $this->dataService->setWeekFromConfig($config);
     }
 
     /**
@@ -168,6 +178,17 @@ class Dates
     public function isOfficeHour($dateTime): bool
     {
         return $this->dataService->isOfficeHour($dateTime);
+    }
+
+    /**
+     * Return a list of business days
+     *
+     * @param array|null $filterDays
+     * @return Collection
+     */
+    public function getBusinessDays(?array $filterDays = []): Collection
+    {
+        return $this->dataService->getBusinessDays($filterDays);
     }
 
 }

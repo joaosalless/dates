@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
+use Joaosalless\Dates\Console\Command\GetBusinessDaysCommand;
 use Joaosalless\Dates\Console\Command\GetCommemorativeDatesCommand;
 use Joaosalless\Dates\Console\Command\GetHolidaysCommand;
 use Joaosalless\Dates\Console\Command\CalculateBusinessDaysCommand;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Application;
 $command = new GetHolidaysCommand();
 $application = new Application();
 $application->add($command);
+$application->add(new GetBusinessDaysCommand());
 $application->add(new GetCommemorativeDatesCommand());
 $application->add(new CalculateBusinessDaysCommand());
 $application->add(new SyncEventsCommand());

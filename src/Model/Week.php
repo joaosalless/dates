@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Joaosalless\Dates\Model;
 
 use DateTime;
+use Illuminate\Support\Collection;
 
 /**
  * Class Week
@@ -54,7 +55,7 @@ class Week
     ];
 
     /**
-     * @var array
+     * @var Collection
      */
     private $days;
 
@@ -69,6 +70,9 @@ class Week
      * @param array|null $config
      */
     public function __construct(?array $config = []) {
+
+        $this->days = collect();
+
         $this->config = !empty($config)
             ? array_merge(self::DEFAULT_CONFIG, $config)
             : self::DEFAULT_CONFIG;
@@ -84,18 +88,36 @@ class Week
      */
     public function configureWeekDays(array $config): self
     {
-        foreach (self::DAYS as $dayNumber => $day) {
-            $this->days[$day] = new Day(
-                $day,
-                $config['days'][$day]['business_day'] ?? $config['business_day'],
-                $config['days'][$day]['office_hours_start'] ?? $config['office_hours_start'],
-                $config['days'][$day]['office_hours_end'] ?? $config['office_hours_end'],
+        foreach (self::DAYS as $dayNumber => $dayName) {
+            $day = new Day(
+                $dayNumber,
+                $dayName,
+                $config['days'][$dayName]['business_day'] ?? false,
+                $config['days'][$dayName]['office_hours_start'] ?? $config['office_hours_start'],
+                $config['days'][$dayName]['office_hours_end'] ?? $config['office_hours_end'],
                 $config['check_office_hours'],
                 $config['check_office_hours_start']
             );
+
+            $this->days->push($day);
         }
 
         return $this;
+    }
+
+    /**
+     * Return all week days
+     *
+     * @param array|null $filterDays
+     * @return Collection
+     */
+    public function getDays(?array $filterDays = []): Collection
+    {
+        if (empty($filterDays)) {
+            return $this->days;
+        }
+
+        return $this->days->whereIn('name', $filterDays)->values();
     }
 
     /**
@@ -106,18 +128,24 @@ class Week
      */
     public function getDayByWeekDayName(string $name): Day
     {
-        return $this->days[$name];
+        return $this
+            ->getDays()
+            ->where('name', '=', $name)
+            ->first();
     }
 
     /**
      * Return a Day instance from a given week day number
      *
-     * @param string $name
+     * @param int $number
      * @return Day
      */
-    public function getDayByWeekDayNumber(string $name): Day
+    public function getDayByWeekDayNumber(int $number): Day
     {
-        return $this->days[$name];
+        return $this
+            ->getDays()
+            ->where('number', '=', $number)
+            ->first();
     }
 
     /**
@@ -128,17 +156,10 @@ class Week
      */
     public function getWeekDayByDateTime(DateTime $date): Day
     {
-        return $this->days[self::DAYS[$date->format("w")]];
-    }
-
-    /**
-     * Return week configuration
-     *
-     * @return array
-     */
-    public function getConfig(): array
-    {
-        return $this->config;
+        return $this
+            ->getDays()
+            ->where('number', '=', $date->format("w"))
+            ->first();
     }
 
 }

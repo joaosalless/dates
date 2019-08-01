@@ -400,6 +400,17 @@ class DataService
     }
 
     /**
+     * Return a list of business days
+     *
+     * @param array|null $filterDays
+     * @return Collection
+     */
+    public function getBusinessDays(?array $filterDays = []): Collection
+    {
+        return $this->getBuilder()->getWeek()->getDays($filterDays);
+    }
+
+    /**
      * Check if day is a business day
      *
      * @param DateTime|string $dateTime

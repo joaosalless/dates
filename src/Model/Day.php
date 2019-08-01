@@ -15,24 +15,29 @@ use Exception;
 class Day extends Model
 {
     /**
+     * @var int
+     */
+    public $number;
+
+    /**
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @var bool
      */
-    private $business_day;
+    public $business_day;
 
     /**
      * @var string|null
      */
-    private $office_hours_start;
+    public $office_hours_start;
 
     /**
      * @var string|null
      */
-    private $office_hours_end;
+    public $office_hours_end;
 
     /**
      * @var bool|null
@@ -47,6 +52,7 @@ class Day extends Model
     /**
      * Day constructor.
      *
+     * @param int $number
      * @param string $name
      * @param bool $business_day
      * @param string|null $office_hours_start
@@ -55,6 +61,7 @@ class Day extends Model
      * @param bool|null $check_office_hours_start
      */
     public function __construct(
+        int $number,
         string $name,
         bool $business_day,
         ?string $office_hours_start = null,
@@ -62,6 +69,7 @@ class Day extends Model
         ?bool $check_office_hours = false,
         ?bool $check_office_hours_start = true
     ) {
+        $this->number = $number;
         $this->name = $name;
         $this->business_day = $business_day;
         $this->office_hours_start = $office_hours_start;
