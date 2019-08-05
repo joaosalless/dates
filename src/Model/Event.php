@@ -16,14 +16,14 @@ use Illuminate\Support\Collection;
 class Event extends Model
 {
     const DATE_FORMAT = 'Y-m-d';
-    const DATE_TYPE_FIXED = 'fixed';
-    const DATE_TYPE_EASTER_SUNDAY = 'easter_sunday';
-    const DATE_TYPE_VARIABLE_YEAR_STRING = 'variable_year_string';
-    const region_NATIONAL = 'national';
-    const REGION_STATE = 'state';
-    const REGION_CITY = 'city';
-    const EVENT_TYPE_HOLIDAY = 'holiday';
-    const EVENT_TYPE_COMMEMORATIVE_DATE = 'commemorative_date';
+    const DATE_TYPE_FIXED = 'FIXED';
+    const DATE_TYPE_EASTER_SUNDAY = 'EASTER_SUNDAY';
+    const DATE_TYPE_VARIABLE_YEAR_STRING = 'VARIABLE_YEAR_STRING';
+    const REGION_NATIONAL = 'NATIONAL';
+    const REGION_STATE = 'STATE';
+    const REGION_CITY = 'CITY';
+    const EVENT_TYPE_HOLIDAY = 'HOLIDAY';
+    const EVENT_TYPE_COMMEMORATIVE_DATE = 'COMMEMORATIVE_DATE';
 
     /**
      * @var DateTime
@@ -53,7 +53,12 @@ class Event extends Model
     /**
      * @var string|null
      */
-    public $city;
+    public $city_code;
+
+    /**
+     * @var string|null
+     */
+    public $city_name;
 
     /**
      * @var string
@@ -81,19 +86,14 @@ class Event extends Model
     public $optional;
 
     /**
-     * @var Collection
-     */
-    public $states;
-
-    /**
-     * @var Collection
-     */
-    public $cities;
-
-    /**
      * @var int
      */
     public $sort_value = 0;
+
+    /**
+     * @var bool
+     */
+    public $source;
 
     /**
      * Event constructor.
@@ -103,12 +103,14 @@ class Event extends Model
      * @param string $region
      * @param string $country
      * @param string|null $state
-     * @param string|null $city
+     * @param string|null $city_code
+     * @param string|null $city_name
      * @param string $date_type
      * @param string $date
      * @param string $name
      * @param string|null $description
      * @param bool $optional
+     * @param bool $source
      *
      * @throws Exception
      */
@@ -118,26 +120,28 @@ class Event extends Model
         string $region,
         string $country,
         ?string $state,
-        ?string $city,
+        ?string $city_code,
+        ?string $city_name,
         string $date_type,
         string $date,
         string $name,
         ?string $description,
-        bool $optional
+        bool $optional,
+        bool $source
     ) {
         $this->datetime = $this->getEventDateTime($year, $date, $date_type);
         $this->event_type = $event_type;
         $this->region = $region;
         $this->country = $country;
         $this->state = $state;
-        $this->city = $city;
+        $this->city_code = $city_code;
+        $this->city_name = $city_name;
         $this->date_type = $date_type;
         $this->date = $this->getDateTime()->format(self::DATE_FORMAT);
         $this->name = $name;
         $this->description = $description;
         $this->optional = $optional;
-        $this->states = collect();
-        $this->cities = collect();
+        $this->source = $source;
         $this->sort_value = $this->getSortValue();
     }
 
@@ -240,22 +244,6 @@ class Event extends Model
         $sunday = mktime(0, 0, 0, $month, $day + 13, $year);
 
         return new DateTime(date('Y-m-d', $sunday));
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getStates(): Collection
-    {
-        return $this->states;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getCities(): Collection
-    {
-        return $this->cities;
     }
 
     /**

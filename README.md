@@ -11,10 +11,8 @@ Events are loaded from a CSV that may be updated from an collaborative API in th
 - 🇧🇷 **BR** Brazil
   - [x] National holidays
   - [x] Estate holidays
-  - [x] City holidays (partially)
-  - [ ] National commemorative dates
-  - [ ] Estate commemorative dates
-  - [ ] City commemorative dates
+  - [x] City holidays
+  - [ ] Commemorative dates
   - [x] Business days
   - [x] Office hours
 

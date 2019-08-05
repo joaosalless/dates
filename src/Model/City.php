@@ -14,11 +14,6 @@ class City extends Model
     /**
      * @var string
      */
-    public $id;
-
-    /**
-     * @var string
-     */
     public $state_code;
 
     /**
@@ -34,29 +29,18 @@ class City extends Model
     /**
      * City constructor.
      *
-     * @param string $id
      * @param string $state_code
      * @param string $code
      * @param string $name
      */
     public function __construct(
-        string $id,
         string $state_code,
         string $code,
         string $name
     ) {
-        $this->id = $id;
         $this->state_code = $state_code;
         $this->code = $code;
         $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
     }
 
     /**

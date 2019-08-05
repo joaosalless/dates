@@ -77,6 +77,6 @@ class IsoRepository extends CsvRepository
      */
     public function filePath(): string
     {
-        return realpath(__DIR__ . "/../Data/{$this->getDataType()}/{$this->getFileName()}.{$this->getFileExtension()}");
+        return realpath(__DIR__ . "/../Data/{$this->getFileName()}.{$this->getFileExtension()}");
     }
 }
