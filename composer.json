@@ -21,11 +21,12 @@
   "require": {
     "php": ">=7.2",
     "ext-calendar": "*",
-    "symfony/console": "^4.3",
+    "ext-json": "*",
     "illuminate/support": "5.5.*",
-    "symfony/var-dumper": ">=3.4 <5",
     "league/csv": "^7.0",
-    "ext-json": "*"
+    "symfony/console": "^4.3",
+    "symfony/translation": "^4.3",
+    "symfony/var-dumper": ">=3.4 <5"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0"

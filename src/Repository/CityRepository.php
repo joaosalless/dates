@@ -29,11 +29,11 @@ class CityRepository extends CsvRepository
     public function loadData(): void
     {
         foreach ($this->csv->fetchAssoc() as $item) {
+            $item = (object) $item;
             $this->data->push(new $this->model(
-                $this->setStringProperty($item['id']),
-                $this->setStringProperty($item['state_code']),
-                $this->setStringProperty($item['code']),
-                $this->setStringProperty($item['name'])
+                $this->setStringProperty($item->state_code),
+                $this->setStringProperty($item->code),
+                $this->setStringProperty($item->name)
             ));
         }
     }

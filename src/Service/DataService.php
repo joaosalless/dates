@@ -13,6 +13,8 @@ use Joaosalless\Dates\Repository\CityRepository;
 use Joaosalless\Dates\Repository\EventRepository;
 use Joaosalless\Dates\Repository\IsoRepository;
 use Joaosalless\Dates\Repository\StateRepository;
+use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Class DataService
@@ -23,11 +25,6 @@ class DataService
 {
     const DATA_TYPE_CSV = 'CSV';
     const DATA_TYPE_JSON = 'JSON';
-
-    /**
-     * @var string
-     */
-    private $dataType = self::DATA_TYPE_CSV;
 
     /**
      * @var Builder
@@ -68,11 +65,21 @@ class DataService
         // Config week days
         $week = new Week($config['week'] ?? []);
 
+        $translator = new Translator($config['language'] ?? 'pt_BR');
+        $translator->addLoader('array', new ArrayLoader());
+
+        // TODO: load translations from files
+        $translator->addResource('array', [
+            'National holiday' => 'Feriado nacional',
+            'State holiday' => 'Feriado estadual',
+            'City holiday' => 'Feriado municipal',
+        ], 'pt_BR');
+
         // Start Builder
         $this->builder = new Builder(
             $this->isoRepository->getIsoByCode($this->formatIsoCode($iso)),
+            $translator,
             $week,
-            $this->dataType,
             null,
             null,
             null
@@ -444,6 +451,30 @@ class DataService
             ->getWeek()
             ->getWeekDayByDateTime($dateTime)
             ->isOfficeHour($dateTime);
+    }
+
+    /**
+     * @return IsoRepository
+     */
+    public function getIsoRepository(): IsoRepository
+    {
+        return $this->isoRepository;
+    }
+
+    /**
+     * @return StateRepository
+     */
+    public function getStateRepository(): StateRepository
+    {
+        return $this->stateRepository;
+    }
+
+    /**
+     * @return CityRepository
+     */
+    public function getCityRepository(): CityRepository
+    {
+        return $this->cityRepository;
     }
 
 }

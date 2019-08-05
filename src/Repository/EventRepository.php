@@ -40,12 +40,14 @@ class EventRepository extends CsvRepository
                 $this->setStringProperty($item['region']),
                 $this->setStringProperty($item['country']),
                 $this->setStringProperty($item['state']),
-                $this->setStringProperty($item['city']),
+                $this->setStringProperty($item['city_code']),
+                $this->setStringProperty($item['city_name']),
                 $this->setStringProperty($item['date_type']),
                 $this->setStringProperty($item['date']),
                 $this->setStringProperty($item['name']),
                 $this->setStringProperty($item['description']),
-                $this->setBooleanProperty($item['optional'])
+                $this->setBooleanProperty($item['optional']),
+                $this->setBooleanProperty($item['source'])
             ));
         }
     }
@@ -105,9 +107,9 @@ class EventRepository extends CsvRepository
     {
         return $this
             ->getEventsByCountry()
-            ->where('region', '=', Event::region_NATIONAL)
+            ->where('region', '=', Event::REGION_NATIONAL)
             ->where('state', '=', null)
-            ->where('city', '=', null)
+            ->where('city_code', '=', null)
             ->values();
     }
 
@@ -122,12 +124,12 @@ class EventRepository extends CsvRepository
             ->getEventsByCountry()
             ->where('region', '=', Event::REGION_STATE)
             ->where('state', '=', $this->getBuilder()->getState()->getCode())
-            ->where('city', '=', null)
+            ->where('city_code', '=', null)
             ->values();
     }
 
     /**
-     * Return events by city
+     * Return events by city_code
      *
      * @return Collection
      */
@@ -136,7 +138,7 @@ class EventRepository extends CsvRepository
         return $this
             ->getEventsByCountry()
             ->where('region', '=', Event::REGION_CITY)
-            ->where('city', '=', $this->getBuilder()->getCity()->getCode())
+            ->where('city_code', '=', $this->getBuilder()->getCity()->getCode())
             ->values();
     }
 
@@ -178,7 +180,9 @@ class EventRepository extends CsvRepository
         $holidays = $this
             ->getHolidaysEvents()
             ->transform(function (Event $event): Holiday {
-                return Holiday::create($event->toArray());
+                $holiday = Holiday::create($event->toArray());
+                $holiday->type = $this->getHolidayType($holiday);
+                return $holiday;
             })
             ->sortBy('date');
 
@@ -187,5 +191,18 @@ class EventRepository extends CsvRepository
         }
 
         return $holidays;
+    }
+
+    private function getHolidayType(Holiday $holiday)
+    {
+        if ($holiday->region === Event::REGION_NATIONAL) {
+            return $this->translator->trans('National holiday');
+        }
+
+        if ($holiday->region === Event::REGION_STATE) {
+            return $this->translator->trans('State holiday');
+        }
+
+        return $this->translator->trans('City holiday');
     }
 }

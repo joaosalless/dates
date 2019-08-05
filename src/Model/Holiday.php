@@ -30,7 +30,7 @@ class Holiday extends Model
     /**
      * @var string|null
      */
-    public $city;
+    public $city_name;
 
     /**
      * @var string
@@ -63,7 +63,7 @@ class Holiday extends Model
      * @param string $region
      * @param string $country
      * @param string|null $state
-     * @param string|null $city
+     * @param string|null $city_name
      * @param string $date
      * @param string $name
      * @param string|null $description
@@ -75,7 +75,7 @@ class Holiday extends Model
         string $region,
         string $country,
         ?string $state,
-        ?string $city,
+        ?string $city_name,
         string $date,
         string $name,
         ?string $description,
@@ -84,7 +84,7 @@ class Holiday extends Model
         $this->region = $region;
         $this->country = $country;
         $this->state = $state;
-        $this->city = $city;
+        $this->city_name = $city_name;
         $this->date = $date;
         $this->name = $name;
         $this->description = $description;
@@ -103,7 +103,7 @@ class Holiday extends Model
             $data['region'],
             $data['country'],
             $data['state'],
-            $data['city'],
+            $data['city_name'],
             $data['date'],
             $data['name'],
             $data['description'],
