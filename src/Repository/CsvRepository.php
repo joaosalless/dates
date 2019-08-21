@@ -9,7 +9,6 @@ use Joaosalless\Dates\Model\Builder;
 use Joaosalless\Dates\Model\Model;
 use Joaosalless\Dates\Service\DataService;
 use League\Csv\Reader;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CsvRepository
@@ -49,11 +48,6 @@ abstract class CsvRepository extends BaseRepository
     protected $dataType = DataService::DATA_TYPE_CSV;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * CsvRepository constructor.
      *
      * @param Builder $builder
@@ -62,7 +56,6 @@ abstract class CsvRepository extends BaseRepository
     {
         $this->data = collect();
         $this->builder = $builder;
-        $this->translator = $this->getBuilder()->getTranslator();
         $this->csv = Reader::createFromPath($this->filePath(), 'r');
         $this->loadData();
     }

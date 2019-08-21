@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Joaosalless\Dates\Model;
 
 use DateTime;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class Builder
@@ -18,11 +17,6 @@ class Builder extends Model
      * @var Iso
      */
     private $iso;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
 
     /**
      * @var Week
@@ -68,7 +62,6 @@ class Builder extends Model
      * Builder constructor.
      *
      * @param Iso $iso
-     * @param TranslatorInterface $translator
      * @param Week $week
      * @param DateTime|null $date
      * @param State|null $state
@@ -79,7 +72,6 @@ class Builder extends Model
      */
     public function __construct(
         Iso $iso,
-        TranslatorInterface $translator,
         Week $week,
         ?DateTime $date = null,
         ?State $state = null,
@@ -89,7 +81,6 @@ class Builder extends Model
         ?bool $filter_city = null
     ) {
         $this->iso = $iso;
-        $this->translator = $translator;
         $this->date = $date;
         $this->state = $state;
         $this->city = $city;
@@ -288,14 +279,6 @@ class Builder extends Model
         $this->week = $week;
 
         return $this;
-    }
-
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator(): TranslatorInterface
-    {
-        return $this->translator;
     }
 
 }
