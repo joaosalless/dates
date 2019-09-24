@@ -26,9 +26,9 @@
   ],
   "require": {
     "php": ">=7.2",
-    "ext-calendar": "*",
-    "illuminate/support": "^5.3",
+    "illuminate/support": "^5.3|^6.0",
     "league/csv": "^7.0",
+    "ext-calendar": "*",
     "ext-json": "*"
   },
   "require-dev": {
