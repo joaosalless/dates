@@ -1,12 +1,18 @@
 {
   "name": "joaosalless/dates",
   "type": "library",
-  "description": "Collaborative dates library for offline identification of holidays or commemorative dates (national, state, municipal) and automatic calculation of working days.",
+  "description": "Date library for identification of holidays or commemorative dates (national, state, municipal), automatic calculation of working days and office hours.",
   "keywords": [
     "joaosalless",
     "dates",
     "holidays",
-    "work-days"
+    "work-days",
+    "business-days",
+    "office-hours",
+    "feriados",
+    "datas comemorativas",
+    "dias úteis",
+    "horário de expediente"
   ],
   "homepage": "https://github.com/joaosalless/dates",
   "license": "MIT",
@@ -20,15 +26,13 @@
   ],
   "require": {
     "php": ">=7.2",
-    "ext-calendar": "*",
-    "ext-json": "*",
-    "illuminate/support": "5.5.*",
+    "illuminate/support": "^5.3|^6.0",
     "league/csv": "^7.0",
-    "symfony/console": "^4.3",
-    "symfony/translation": "^4.3",
-    "symfony/var-dumper": ">=3.4 <5"
+    "ext-calendar": "*",
+    "ext-json": "*"
   },
   "require-dev": {
+    "symfony/var-dumper": ">=3.4 <5",
     "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0"
   },
   "autoload": {

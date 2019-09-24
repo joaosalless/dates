@@ -13,8 +13,6 @@ use Joaosalless\Dates\Repository\CityRepository;
 use Joaosalless\Dates\Repository\EventRepository;
 use Joaosalless\Dates\Repository\IsoRepository;
 use Joaosalless\Dates\Repository\StateRepository;
-use Symfony\Component\Translation\Loader\ArrayLoader;
-use Symfony\Component\Translation\Translator;
 
 /**
  * Class DataService
@@ -65,20 +63,9 @@ class DataService
         // Config week days
         $week = new Week($config['week'] ?? []);
 
-        $translator = new Translator($config['language'] ?? 'pt_BR');
-        $translator->addLoader('array', new ArrayLoader());
-
-        // TODO: load translations from files
-        $translator->addResource('array', [
-            'National holiday' => 'Feriado nacional',
-            'State holiday' => 'Feriado estadual',
-            'City holiday' => 'Feriado municipal',
-        ], 'pt_BR');
-
         // Start Builder
         $this->builder = new Builder(
             $this->isoRepository->getIsoByCode($this->formatIsoCode($iso)),
-            $translator,
             $week,
             null,
             null,

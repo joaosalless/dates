@@ -59,18 +59,18 @@ class EventRepository extends CsvRepository
     {
         $eventsResult = collect();
 
-        // National events
-        $eventsResult = $eventsResult->merge($this->getNationalEvents());
+        // City events
+        if ($this->getBuilder()->isFilterCity()) {
+            $eventsResult = $eventsResult->merge($this->getCityEvents());
+        }
 
         // State events
         if ($this->getBuilder()->isFilterState()) {
             $eventsResult = $eventsResult->merge($this->getStateEvents());
         }
 
-        // City events
-        if ($this->getBuilder()->isFilterCity()) {
-            $eventsResult = $eventsResult->merge($this->getCityEvents());
-        }
+        // National events
+        $eventsResult = $eventsResult->merge($this->getNationalEvents());
 
         return $eventsResult->values();
     }
@@ -193,16 +193,20 @@ class EventRepository extends CsvRepository
         return $holidays;
     }
 
-    private function getHolidayType(Holiday $holiday)
+    private function getHolidayType(Holiday $holiday): ?string
     {
         if ($holiday->region === Event::REGION_NATIONAL) {
-            return $this->translator->trans('National holiday');
+            return 'National holiday';
         }
 
         if ($holiday->region === Event::REGION_STATE) {
-            return $this->translator->trans('State holiday');
+            return 'State holiday';
         }
 
-        return $this->translator->trans('City holiday');
+        if ($holiday->region === Event::REGION_CITY) {
+            return 'City holiday';
+        }
+
+        return null;
     }
 }
