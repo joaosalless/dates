@@ -36,39 +36,35 @@ $ composer require joaosalless/dates
 $dates = new Joaosalless\Dates\Dates('BR');
 
 // Get only national holidays
-$dates->getHolidays(
-    '2019-09-07', // Date
-);
+$dates->getHolidays('2019-09-07');
 
 // Check if a given date is holiday only national holidays
-$dates->isHoliday(
-    '2019-09-07', // Date
-);
+$dates->isHoliday('2019-09-07');
 
 // Get national and state holidays
 $dates->getHolidays(
     '2019-09-07', // Date
-    'SP',         // State code
+    'SP'          // State code
 );
 
 // Check if a given date is holiday in national and state holidays
 $dates->isHoliday(
     '2019-09-07', // Date
-    'SP',         // State code
+    'SP'          // State code
 );
 
 // Get national, state and city holidays
 $dates->getHolidays(
     '2019-09-07', // Date
     'SP',         // State code
-    '3550308',    // City code
+    '3550308'     // City code
 );
 
 // Check if a given date is holiday in national, state and city holidays
 $dates->isHoliday(
     '2019-09-07', // Date
     'SP',         // State code
-    '3550308',    // City code
+    '3550308'     // City code
 );
 ```
 
@@ -78,21 +74,19 @@ $dates->isHoliday(
 $dates = new Joaosalless\Dates\Dates('BR');
 
 // Get only national commemorative dates
-$dates->getCommemorativeDates(
-    '2019-09-07', // Date
-);
+$dates->getCommemorativeDates('2019-09-07');
 
 // Get national and state commemorative dates
 $dates->getCommemorativeDates(
     '2019-09-07', // Date
-    'SP',         // State code
+    'SP'          // State code
 );
 
 // Get national, state and city commemorative dates
 $dates->getCommemorativeDates(
     '2019-09-07', // Date
     'SP',         // State code
-    '3550308',    // City code
+    '3550308'     // City code
 );
 ```
 
